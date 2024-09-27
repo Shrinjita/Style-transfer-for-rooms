@@ -78,4 +78,5 @@ python scripts/style_transfer.py --content path_to_content_image --style path_to
 - **GAN-Based Models:** We plan to explore Generative Adversarial Networks (GANs) to enable generation, modification, or removal of furniture styles.
 - **More Training Time:** With additional computational resources, further model tuning and larger training epochs will enhance the results.
 
-## References
+## Project Breakdown Framework
+
