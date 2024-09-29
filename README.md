@@ -4,19 +4,19 @@
 - Ancy B John
 - Akshayaharshini
 
-### Photorealistic Style Transfer for Interior Rooms
+## Photorealistic Style Transfer for Interior Rooms
 
-## Overview
+### Overview
 
 In this project, I implemented a photorealistic style transfer model that transforms the style of interior room images using neural networks. The model utilizes an autoencoder architecture combined with VGG-19 as the feature extractor to apply styles from one image onto another while preserving the content structure.
 
-## Features
+### Features
 
 - I used a pre-trained VGG-19 model for style transfer.
 - The project leverages the MSCOCO dataset for both content and style images.
 - I visualized the styled output in real-time, allowing for immediate feedback on the transformations.
 
-## Requirements
+### Requirements
 
 To run this project in Google Colab, I ensured that the following libraries are installed:
 
@@ -28,7 +28,7 @@ To run this project in Google Colab, I ensured that the following libraries are 
 
 These libraries are crucial for building the model and processing images.
 
-## Cloning the Notebook
+### Cloning the Notebook
 
 To get started, I copied my Jupyter notebook from my GitHub repository. You can do this by running the following command in a new Colab notebook:
 
@@ -36,7 +36,7 @@ To get started, I copied my Jupyter notebook from my GitHub repository. You can 
 !git clone Shrinjita/Style-transfer-for-rooms
 ```
 
-## Code Description
+### Code Description
 
 1. **Importing Libraries**: 
    In the first section, I imported all the necessary libraries. This includes PyTorch for building the neural network, torchvision for model components, and other utilities like PIL for image processing and matplotlib for visualization.
@@ -62,11 +62,11 @@ To get started, I copied my Jupyter notebook from my GitHub repository. You can 
 8. **Visualizing Results**: 
    Finally, I added functionality to visualize the output images, displaying the original content image, the style image, and the resulting stylized image.
 
-## Conclusion
+### Conclusion
 
 Through this project, I demonstrated how to apply neural style transfer to interior room images using deep learning techniques. By leveraging the MSCOCO dataset, I accessed a diverse set of images for both content and style, resulting in impressive transformations. I also experimented with various parameters to enhance the results further.
 
-## Notes for Users
+### Notes for Users
 
 - I recommend setting the Colab runtime to GPU for optimal performance. This can be done by navigating to **Runtime > Change runtime type > Hardware accelerator > T4 GPU**.
 - Users can also modify the training parameters, such as the number of epochs or learning rates, to explore different configurations and achieve better results.
