@@ -4,79 +4,69 @@
 - Ancy B John
 - Akshayaharshini
 
+# Photorealistic Style Transfer for Interior Rooms
+
 ## Overview
 
-This project aims to apply photorealistic style transfer to interior rooms, allowing homeowners to visualize various design styles (modern, minimalistic, contemporary, etc.) before embarking on costly remodels. The model uses an autoencoder architecture with block training, high-frequency residual skip connections, and bottleneck feature aggregation to generate realistic images that incorporate new room styles.
+In this project, I implemented a photorealistic style transfer model that transforms the style of interior room images using neural networks. The model utilizes an autoencoder architecture combined with VGG-19 as the feature extractor to apply styles from one image onto another while preserving the content structure.
 
----
+## Features
 
-## Project Structure
+- I used a pre-trained VGG-19 model for style transfer.
+- The project leverages the MSCOCO dataset for both content and style images.
+- I visualized the styled output in real-time, allowing for immediate feedback on the transformations.
 
-```bash
-|-- data/          # Contains datasets (MSCOCO, ADE20K)
-|-- models/        # Autoencoder model and VGG19 feature extractor
-|-- experiments/   # Results and model comparisons
-|-- notebooks/     # Jupyter Notebooks for training and analysis
-|-- scripts/       # Scripts to run the model and generate stylized images
-|-- README.md      # This file
-```
+## Requirements
 
-## Methodology
+To run this project in Google Colab, I ensured that the following libraries are installed:
 
-The project builds upon the autoencoder-based Neural Style Transfer (NST) method with several improvements:
-1. **Autoencoder Architecture:** We utilize a VGG-19 based autoencoder for content and style extraction.
-2. **Whitening and Coloring Transforms (WCT):** We apply WCT to transform content image features to match the covariance of the style image.
-3. **Bottleneck Feature Aggregation (BFA):** Concatenates multi-scale features for better detail preservation.
-4. **High-Frequency Skip Connections:** Improves the photorealism of the output by adding blockwise residual training.
+- `torch`
+- `torchvision`
+- `pillow`
+- `matplotlib`
+- `tensorflow-datasets`
 
-## Datasets
+These libraries are crucial for building the model and processing images.
 
-- **MSCOCO:** Contains 118,288 images used for training and validation.
-- **ADE20K:** Used for initial semantic segmentation; contains 25,574 training images.
+## Cloning the Notebook
 
-## Setup
-
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/mariemchu/PhotoNetWCT2.git
-   cd PhotoNetWCT2
-   ```
-
-2. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Download the datasets:**
-   - [MSCOCO](http://cocodataset.org/#download)
-   - [ADE20K](https://groups.csail.mit.edu/vision/datasets/ADE20K/)
-
-## Training the Model
-
-To train the model using the MSCOCO dataset:
+To get started, I copied my Jupyter notebook from my GitHub repository. You can do this by running the following command in a new Colab notebook:
 
 ```bash
-python scripts/train_autoencoder.py --dataset MSCOCO --epochs 50
+!git clone Shrinjita/Style-transfer-for-rooms
 ```
 
-## Running Inference
+## Code Description
 
-To apply style transfer on a room image:
+1. **Importing Libraries**: 
+   In the first section, I imported all the necessary libraries. This includes PyTorch for building the neural network, torchvision for model components, and other utilities like PIL for image processing and matplotlib for visualization.
 
-```bash
-python scripts/style_transfer.py --content path_to_content_image --style path_to_style_image --output output_image.png
-```
+2. **Defining the VGG Encoder**: 
+   I created a class named `VGGEncoder` that uses a pre-trained VGG-19 model to extract features from input images. This allows the model to learn styles effectively by capturing high-level features.
 
-## Key Features
+3. **Creating the Decoder**: 
+   I defined a `Decoder` class that reconstructs images from the encoded features. This step is crucial for generating the final stylized images.
 
-- **Photorealistic Image Style Transfer:** Preserves structural details while changing the style of the room.
-- **Efficient Architecture:** Incorporates feature aggregation and high-frequency residuals for improved results.
-- **Dataset Compatibility:** Utilizes popular datasets like MSCOCO and ADE20K for training and validation.
+4. **Style Transfer Model**: 
+   The `StyleTransferModel` class combines the encoder and decoder. It implements the forward pass, where the content and style images are processed, and the whitening and coloring transform (WCT) is applied to combine features appropriately.
 
-## Future Work
+5. **Image Preprocessing**: 
+   I included functions to preprocess images, resizing and normalizing them for input into the model. This step ensures that the images are in the right format for processing.
 
-- **GAN-Based Models:** We plan to explore Generative Adversarial Networks (GANs) to enable generation, modification, or removal of furniture styles.
-- **More Training Time:** With additional computational resources, further model tuning and larger training epochs will enhance the results.
+6. **Loading the MSCOCO Dataset**: 
+   The project fetches images directly from the MSCOCO dataset. I wrote code to automatically select one image as the content and another as the style, eliminating the need for manual uploads.
 
-## Project Breakdown Framework
+7. **Training the Model**: 
+   The training function executes the style transfer process. During training, I optimized the model by minimizing the reconstruction loss between the stylized output and the content image.
 
+8. **Visualizing Results**: 
+   Finally, I added functionality to visualize the output images, displaying the original content image, the style image, and the resulting stylized image.
+
+## Conclusion
+
+Through this project, I demonstrated how to apply neural style transfer to interior room images using deep learning techniques. By leveraging the MSCOCO dataset, I accessed a diverse set of images for both content and style, resulting in impressive transformations. I also experimented with various parameters to enhance the results further.
+
+## Notes for Users
+
+- I recommend setting the Colab runtime to GPU for optimal performance. This can be done by navigating to **Runtime > Change runtime type > Hardware accelerator > T4 GPU**.
+- Users can also modify the training parameters, such as the number of epochs or learning rates, to explore different configurations and achieve better results.
