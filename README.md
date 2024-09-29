@@ -4,7 +4,7 @@
 - Ancy B John
 - Akshayaharshini
 
-# Photorealistic Style Transfer for Interior Rooms
+### Photorealistic Style Transfer for Interior Rooms
 
 ## Overview
 
