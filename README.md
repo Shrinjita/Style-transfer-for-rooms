@@ -3,70 +3,63 @@
 - Dharanya C
 - Ancy B John
 - Akshayaharshini
+  
+# Style Transfer for Interior Rooms
 
-## Photorealistic Style Transfer for Interior Rooms
+This repository contains the implementation of a photorealistic style transfer method for interior rooms using a custom autoencoder architecture. The model leverages Bottleneck Feature Aggregation (BFA), high-frequency residual skip connections, and ZCA transforms to achieve high-quality style transfer, preserving the fine details of the room images.
 
-### Overview
+## Features
 
-In this project, I implemented a photorealistic style transfer model that transforms the style of interior room images using neural networks. The model utilizes an autoencoder architecture combined with VGG-19 as the feature extractor to apply styles from one image onto another while preserving the content structure.
+- **Autoencoder Architecture**: Uses a VGG-19 encoder and a symmetric decoder.
+- **Bottleneck Feature Aggregation (BFA)**: Enhances the style transfer by combining multi-scale features.
+- **High-Frequency Residual Skip Connections**: Preserves fine details like edges and textures during style transfer.
+- **ZCA Transform**: A specialized whitening and coloring transformation to match content and style covariance.
+- **Blockwise Training**: Trains the model in stages to capture the coarse and fine features of the image.
 
-### Features
+## Datasets
 
-- I used a pre-trained VGG-19 model for style transfer.
-- The project leverages the MSCOCO dataset for both content and style images.
-- I visualized the styled output in real-time, allowing for immediate feedback on the transformations.
+The model is trained on the following datasets:
+- **MSCOCO**: Used for initial training to minimize pixel reconstruction and feature losses.
+- **ADE20K**: Used for semantic segmentation.
+- Filtered subsets of interior room images were used, consisting of 6118 training images and 523 validation images.
 
-### Requirements
+## Model Architecture
 
-To run this project in Google Colab, I ensured that the following libraries are installed:
+The architecture combines:
+- **VGG-19 Encoder** for extracting features.
+- **Symmetric Decoder** for high-quality image reconstruction.
+- **BFA** for feature aggregation.
+- **Residual Skip Connections** for preserving high-frequency details.
+- **ZCA Transform** for matching content features to style covariance.
 
-- `torch`
-- `torchvision`
-- `pillow`
-- `matplotlib`
-- `tensorflow-datasets`
+## Training
 
-These libraries are crucial for building the model and processing images.
+- The model was trained with pixel reconstruction and feature losses.
+- Hyperparameters such as the number of VGG layers concatenated in BFA and learning rate were fine-tuned.
+- Blockwise training was used to refine features from coarse to fine detail.
 
-### Cloning the Notebook
+## Future Improvements
 
-To get started, I copied my Jupyter notebook from my GitHub repository. You can do this by running the following command in a new Colab notebook:
+Possible enhancements include:
+- Using **Adaptive Instance Normalization (AdaIN)** to replace ZCA transform.
+- Trying alternative architectures like **ResNet + DenseNet** or **EfficientNet** for improved feature extraction.
+- Experimenting with additional datasets such as **Interiornet** and **IIW**.
+
+## Usage
+
+Clone the repository and install the required dependencies:
 
 ```bash
-!git clone Shrinjita/Style-transfer-for-rooms
+git clone https://github.com/yourusername/StyleTransferForRooms.git
+cd StyleTransferForRooms
+pip install -r requirements.txt
 ```
 
-### Code Description
+Run the Jupyter Notebook (`v1.ipynb`):
 
-1. **Importing Libraries**: 
-   In the first section, I imported all the necessary libraries. This includes PyTorch for building the neural network, torchvision for model components, and other utilities like PIL for image processing and matplotlib for visualization.
+1. Start Jupyter Notebook:
+   ```bash
+   jupyter notebook
+   ```
 
-2. **Defining the VGG Encoder**: 
-   I created a class named `VGGEncoder` that uses a pre-trained VGG-19 model to extract features from input images. This allows the model to learn styles effectively by capturing high-level features.
-
-3. **Creating the Decoder**: 
-   I defined a `Decoder` class that reconstructs images from the encoded features. This step is crucial for generating the final stylized images.
-
-4. **Style Transfer Model**: 
-   The `StyleTransferModel` class combines the encoder and decoder. It implements the forward pass, where the content and style images are processed, and the whitening and coloring transform (WCT) is applied to combine features appropriately.
-
-5. **Image Preprocessing**: 
-   I included functions to preprocess images, resizing and normalizing them for input into the model. This step ensures that the images are in the right format for processing.
-
-6. **Loading the MSCOCO Dataset**: 
-   The project fetches images directly from the MSCOCO dataset. I wrote code to automatically select one image as the content and another as the style, eliminating the need for manual uploads.
-
-7. **Training the Model**: 
-   The training function executes the style transfer process. During training, I optimized the model by minimizing the reconstruction loss between the stylized output and the content image.
-
-8. **Visualizing Results**: 
-   Finally, I added functionality to visualize the output images, displaying the original content image, the style image, and the resulting stylized image.
-
-### Conclusion
-
-Through this project, I demonstrated how to apply neural style transfer to interior room images using deep learning techniques. By leveraging the MSCOCO dataset, I accessed a diverse set of images for both content and style, resulting in impressive transformations. I also experimented with various parameters to enhance the results further.
-
-### Notes for Users
-
-- I recommend setting the Colab runtime to GPU for optimal performance. This can be done by navigating to **Runtime > Change runtime type > Hardware accelerator > T4 GPU**.
-- Users can also modify the training parameters, such as the number of epochs or learning rates, to explore different configurations and achieve better results.
+2. Open and run the cells in `v1.ipynb` to train the model and perform style transfer.
