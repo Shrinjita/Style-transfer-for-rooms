@@ -4,62 +4,88 @@
 - Ancy B John
 - Akshayaharshini
   
-# Style Transfer for Interior Rooms
+## Project Overview
+This project demonstrates two main functionalities:
+1. **Loading and Displaying Images**: The code streams images from a dataset and displays them. It includes methods to load images from a directory, split the dataset into training and testing sets, and visualize random samples.
+2. **Style Transfer Autoencoder**: A PyTorch-based autoencoder designed for photorealistic style transfer. The model uses pre-trained VGG-19 as an encoder and a custom decoder to reconstruct images. The model also implements bottleneck feature aggregation and ZCA whitening for enhanced style transfer.
 
-This repository contains the implementation of a photorealistic style transfer method for interior rooms using a custom autoencoder architecture. The model leverages Bottleneck Feature Aggregation (BFA), high-frequency residual skip connections, and ZCA transforms to achieve high-quality style transfer, preserving the fine details of the room images.
+---
 
 ## Features
 
-- **Autoencoder Architecture**: Uses a VGG-19 encoder and a symmetric decoder.
-- **Bottleneck Feature Aggregation (BFA)**: Enhances the style transfer by combining multi-scale features.
-- **High-Frequency Residual Skip Connections**: Preserves fine details like edges and textures during style transfer.
-- **ZCA Transform**: A specialized whitening and coloring transformation to match content and style covariance.
-- **Blockwise Training**: Trains the model in stages to capture the coarse and fine features of the image.
+### 1. **Loading and Displaying Images**:
+- **Streaming Dataset**: Loads images using `datasets.load_dataset()` without downloading the entire dataset at once, avoiding memory overload.
+- **Split Folders**: The dataset is split into 80% training and 20% testing using `splitfolders.ratio()`.
+- **Displaying Images**: Images from the training dataset are visualized using `matplotlib` and `PIL`.
 
-## Datasets
+### 2. **Style Transfer Autoencoder**:
+- **VGG-19 Based Encoder**: Pre-trained VGG-19 is used to extract features from the input images.
+- **Bottleneck Feature Aggregation**: Multi-scale features are aggregated in the bottleneck layer to enhance style transfer.
+- **Symmetric Decoder**: A custom decoder reconstructs the styled image from the bottlenecked features.
+- **ZCA Whitening**: This ensures style features are transferred in a more refined manner by transforming content features into the style domain.
 
-The model is trained on the following datasets:
-- **MSCOCO**: Used for initial training to minimize pixel reconstruction and feature losses.
-- **ADE20K**: Used for semantic segmentation.
-- Filtered subsets of interior room images were used, consisting of 6118 training images and 523 validation images.
+---
 
-## Model Architecture
+## Installation and Requirements
 
-The architecture combines:
-- **VGG-19 Encoder** for extracting features.
-- **Symmetric Decoder** for high-quality image reconstruction.
-- **BFA** for feature aggregation.
-- **Residual Skip Connections** for preserving high-frequency details.
-- **ZCA Transform** for matching content features to style covariance.
+### Dependencies:
+- `datasets`
+- `matplotlib`
+- `numpy`
+- `splitfolders`
+- `torch`
+- `torchvision`
+- `Pillow` (PIL)
 
-## Training
-
-- The model was trained with pixel reconstruction and feature losses.
-- Hyperparameters such as the number of VGG layers concatenated in BFA and learning rate were fine-tuned.
-- Blockwise training was used to refine features from coarse to fine detail.
-
-## Future Improvements
-
-Possible enhancements include:
-- Using **Adaptive Instance Normalization (AdaIN)** to replace ZCA transform.
-- Trying alternative architectures like **ResNet + DenseNet** or **EfficientNet** for improved feature extraction.
-- Experimenting with additional datasets such as **Interiornet** and **IIW**.
-
-## Usage
-
-Clone the repository and install the required dependencies:
-
+To install all the necessary packages, run:
 ```bash
-git clone https://github.com/yourusername/StyleTransferForRooms.git
-cd StyleTransferForRooms
-pip install -r requirements.txt
+pip install datasets matplotlib numpy splitfolders torch torchvision Pillow
 ```
 
-Run the Jupyter Notebook (`v1.ipynb`):
-
-1. Start Jupyter Notebook:
+### Dataset Setup:
+1. Create an input folder named `dataset` and store images in subfolders (categories).
+2. Run the script to split the dataset into training and testing sets:
    ```bash
-   jupyter notebook
+   splitfolders.ratio('dataset', output='style images', seed=1337, ratio=(.8, .2))
    ```
 
-2. Open and run the cells in `v1.ipynb` to train the model and perform style transfer.
+---
+
+## Running the Code
+
+### 1. Display Random Images from the Dataset:
+- Use the code to stream and display images from the `lsun-bedrooms` dataset:
+```python
+ds = load_dataset("pcuenq/lsun-bedrooms", split="train", streaming=True)
+```
+- It displays random images using `matplotlib`.
+
+### 2. Visualizing Local Images:
+- Display images from the training directory:
+```python
+train_dir = 'style images/train'
+image_files = get_image_files(train_dir, num_images=5)
+display_images(image_files)
+```
+
+### 3. Training the Style Transfer Autoencoder:
+- Train the autoencoder with a custom dataset:
+```python
+autoencoder = StyleTransferAutoencoder()
+train_model(autoencoder, dataloader, epochs=10, lr=1e-4)
+```
+- The model is trained on low-to-high resolution images in a block-wise manner.
+
+---
+
+## Customization
+
+- Modify `num_images` in `get_image_files()` to change the number of images displayed.
+- Adjust the dataset resolution in `train_model()` for low-to-high resolution training.
+
+---
+
+## Future Improvements
+- **Perceptual Loss**: Implement a more advanced perceptual loss for better results.
+- **Dataset Augmentation**: Add image augmentation techniques for better generalization.
+- **Interactive GUI**: Create an interactive interface using `Streamlit` for easier model usage and visualization.
